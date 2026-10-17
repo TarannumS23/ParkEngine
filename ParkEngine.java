@@ -171,24 +171,173 @@ class VehicleFactory
     }
 }
 
+///////////////////////////////////////////////////////////////
+///  Step 4 : Create ParkingSpot Heirarchy
+///  It is used to create heirarchy of parking spots
+///  Concepts : Encapsulation, Abstration, Polymorphism, Inheritance
+///////////////////////////////////////////////////////////////
+
+abstract class ParkingSpot
+{
+    // Unique number for parking spot (Primary Key)
+    private int spotNumber;
+
+    // Type of Parking spot
+    private SpotType spotType;
+
+    // Indicates whether spot is currently occupied or not
+    private boolean occupied;
+
+    // Stores information about the vehicle
+    private Vehicle vehicle;
+
+    // Parametrised constructor
+    public ParkingSpot(int spotNumber, SpotType spotType)
+    {
+        this.spotNumber = spotNumber;
+        this.spotType = spotType;
+
+        // Initialised with default values
+        this.occupied = false;
+        this.vehicle = null;
+    }
+
+    public int getSpotNumber()
+    {
+        return this.spotNumber;
+    }
+
+    public SpotType getSpotType()
+    {
+        return this.spotType;
+    }
+
+    public boolean isOccupied()
+    {
+        return this.occupied;
+    }
+
+    public Vehicle getVehicle()
+    {
+        return this.vehicle;
+    }
+
+    // It is used to park the vehicle
+    public void parkVehicle(Vehicle vehicle)
+    {
+        if(this.occupied == true)
+        {
+            throw new RuntimeException("Parking spot is already occupied");
+        }
+        else
+        {
+            this.vehicle = vehicle;
+            this.occupied = true;
+        }
+    }
+
+    public Vehicle removeVehicle()
+    {
+        if(this.occupied == true)
+        {
+            Vehicle temp = vehicle;  
+
+            this.vehicle = null;
+            this.occupied = false;
+
+            return temp;
+        }
+        else
+        {
+            throw new RuntimeException("Parking spot is already empty");
+        }
+    }
+
+    // this method decides whether we can park it in the spot or not
+    public abstract boolean canFitVehicle(Vehicle vehicle);
+
+    public void display()
+    {
+        System.out.println("Spot : "+spotNumber+ "["+ spotType +"]");
+
+        if(this.occupied == true)
+        {
+            System.out.println("Occupied by : "+vehicle.getVehicleNumber());
+        }
+        else
+        {
+            System.out.println("Spot is available");
+        }
+    }
+} // end of ParkingSpot class
+
+class BikeSpot extends ParkingSpot
+{
+    public BikeSpot(int spotNumber)
+    {
+        super(spotNumber, SpotType.BIKE);
+    }
+
+    @Override 
+    public boolean canFitVehicle(Vehicle vehicle)
+    {
+        if(vehicle.getVehicleType() == VehicleType.BIKE)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+class CarSpot extends ParkingSpot
+{
+    public CarSpot(int spotNumber)
+    {
+        super(spotNumber, SpotType.CAR);
+    }
+
+    @Override 
+    public boolean canFitVehicle(Vehicle vehicle)
+    {
+        if(vehicle.getVehicleType() == VehicleType.CAR)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+class TruckSpot extends ParkingSpot
+{
+    public TruckSpot(int spotNumber)
+    {
+        super(spotNumber, SpotType.TRUCK);
+    }
+
+    @Override 
+    public boolean canFitVehicle(Vehicle vehicle)
+    {
+        if(vehicle.getVehicleType() == VehicleType.TRUCK)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
 class ParkEngine
 {
     public static void main(String A[]) 
     {
-         Vehicle bike = VehicleFactory.createVehicle(
-            VehicleType.BIKE, "MH10AB1234"
-        );
-
-        Vehicle car = VehicleFactory.createVehicle(
-            VehicleType.CAR, "MH12CD5678"
-        );
-
-        Vehicle truck = VehicleFactory.createVehicle(
-            VehicleType.TRUCK, "MH14EF9012"
-        );
-
-        bike.display();
-        car.display();
-        truck.display();
-        }
+        
+    }
 }
