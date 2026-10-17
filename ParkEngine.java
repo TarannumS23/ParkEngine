@@ -1,9 +1,9 @@
 /*
     ParkingLot Automation System
 
-    Step 1 : Create requred enums                         [DONE]
-    Step 2 : Vehicle Hierarchy creation                   [DONE]
-    Step 3 : VehicleFactory creation (Factory Pattern)    [IN PROGRESS]
+    Step 1 : Create requred enums
+    Step 2 : Vehicle Hierarchy creation 
+    Step 3 : VehicleFactory creation (Factory Pattern)
     Step 4 : ParkingSpot hierarchy
     Step 5 : ParkingObserver
     Step 6 : ParkingFloor class
@@ -70,11 +70,6 @@ abstract class Vehicle
     // Parametrised constructor
     public Vehicle(String vehicleNumber, VehicleType vehicleType)     // this constructor will gets called when any derived class will call
     {
-        if (vehicleNumber == null || vehicleNumber.trim().isEmpty()) 
-        {
-            throw new IllegalArgumentException("Vehicle number cannot be empty");
-        }
-
         this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType; 
     }
@@ -147,10 +142,53 @@ class Truck extends Vehicle
     }
 }
 
+///////////////////////////////////////////////////////////////
+///  Step 3 : Create VehicleFactory class
+///  It is used to centralised the creation of vehicle objects
+///  Concepts : Factory Design Pattern
+///////////////////////////////////////////////////////////////
+
+class VehicleFactory
+{
+    // Creates and return the desired class object
+
+    public static Vehicle createVehicle(VehicleType type, String number)             // static method so no need to create object
+    {
+        switch(type)
+        {
+            case BIKE:
+                return new Bike(number);
+
+            case CAR:
+                return new Car(number);
+
+            case TRUCK:
+                return new Truck(number);
+
+            default:
+                throw new IllegalArgumentException("Invalid Vehicle type");
+        }
+    }
+}
+
 class ParkEngine
 {
     public static void main(String A[]) 
     {
-      
-    }
+         Vehicle bike = VehicleFactory.createVehicle(
+            VehicleType.BIKE, "MH10AB1234"
+        );
+
+        Vehicle car = VehicleFactory.createVehicle(
+            VehicleType.CAR, "MH12CD5678"
+        );
+
+        Vehicle truck = VehicleFactory.createVehicle(
+            VehicleType.TRUCK, "MH14EF9012"
+        );
+
+        bike.display();
+        car.display();
+        truck.display();
+        }
 }
