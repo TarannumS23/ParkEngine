@@ -465,10 +465,6 @@ class ParkingFloor
 ///  status 
 ///  Subject  -> ParkingFloor
 ///  Observer -> ParingDisplayBoard
-
-///  NOTE : Any onserver is going to observe the subject
-///  There will be multiple observers for one subject
-
 ///  Concepts : Observer Design Pattern
 ///////////////////////////////////////////////////////////////
 
@@ -503,16 +499,6 @@ class ParkingDisplayBoard implements ParkingObserver
     }
 }
 
-// We can create new observers for the same subject
-/*
-    class ParkingWebsite implements ParkingObserver
-    {
-        public void update()
-        {
-            
-        }
-    }
-*/
 class ParkEngine
 {
     public static void main(String A[]) 
