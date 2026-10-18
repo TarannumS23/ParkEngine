@@ -334,6 +334,185 @@ class TruckSpot extends ParkingSpot
     }
 }
 
+///////////////////////////////////////////////////////////////
+///  Step 5 : Create ParkingObserver class
+///  It is used to automatically update display board when 
+///  the parking availability changes.
+///  Concepts : Observer Design Pattern
+///////////////////////////////////////////////////////////////
+
+interface ParkingObserver
+{
+    void update();
+}
+
+///////////////////////////////////////////////////////////////
+///  Step 6 : Create ParkingFloor class
+///  It is used to manage parking floor
+///  Concepts : Composition, ArrayList, Object Management
+///////////////////////////////////////////////////////////////
+
+class ParkingFloor
+{
+    // Unique floor number
+    private int floorNumber;
+
+    // Collection of all parking spots
+    private List<ParkingSpot> parkingSpots;
+
+    // Collection of observers registered for the floor
+    private List<ParkingObserver> observers;
+
+    public ParkingFloor(int floorNumber)
+    {
+        this.floorNumber = floorNumber;
+
+        this.parkingSpots = new ArrayList<>();
+
+        this.observers = new ArrayList<>();
+    }
+
+    public int getFloorNumber()
+    {
+        return this.floorNumber;
+    }
+
+    public void addParkingSpot(ParkingSpot spot)
+    {
+        parkingSpots.add(spot);
+    }
+
+    public void addObserver(ParkingObserver observer)
+    {
+        observers.add(observer);
+    }
+
+    private void notifyObservers()
+    {
+        for(ParkingObserver observer : observers)
+        {
+            observer.update();
+        }
+    }
+
+    // Method is going to search parking spot for specific type of vehicle
+    public ParkingSpot findAvailableSpot(Vehicle vehicle)      // vehicle type
+    {
+        for(ParkingSpot spot : parkingSpots)
+        {
+            if(!spot.isOccupied() && spot.canFitVehicle(vehicle))
+            {
+                return spot;
+            }
+        }
+
+        return  null;
+    }
+
+    // Called when new vehicle gets parked
+    public void occupySpot(ParkingSpot spot, Vehicle vehicle)
+    {
+        // Allocate spot for the vehicle 
+        spot.parkVehicle(vehicle);
+
+        // Notify all observers about the availability of spots
+        notifyObservers();
+    }
+
+    public void releaseSpot(ParkingSpot spot)
+    {
+        // Release the already allocated spot
+        spot.removeVehicle();
+
+        // Notify all observers about the availability of spots
+        notifyObservers();
+    }
+
+    public int getAvailableCount(SpotType type)
+    {
+        int count = 0;
+
+        for(ParkingSpot spot : parkingSpots)
+        {
+            if(spot.getSpotType() == type && !spot.isOccupied())
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    // Display all parking spots on specific floor
+    
+    public void displayFloor()
+    {
+        System.out.println();
+
+        System.out.println("Floor : "+floorNumber);
+
+        for(ParkingSpot spot : parkingSpots)
+        {
+            spot.display();
+        }
+    }
+    
+}
+
+///////////////////////////////////////////////////////////////
+///  Step 7 : Create ParkingDisplayBoard class
+///  It is used to create a class which displays the parking 
+///  status 
+///  Subject  -> ParkingFloor
+///  Observer -> ParingDisplayBoard
+
+///  NOTE : Any onserver is going to observe the subject
+///  There will be multiple observers for one subject
+
+///  Concepts : Observer Design Pattern
+///////////////////////////////////////////////////////////////
+
+class ParkingDisplayBoard implements ParkingObserver
+{
+    // Floor whose availability is diplayed by this board
+    private ParkingFloor floor;
+
+    // Constructor
+    public ParkingDisplayBoard(ParkingFloor floor)
+    {
+        this.floor = floor;
+    }
+
+    // Automatically called whenever floor availability changes
+    @Override 
+    public void update()
+    {
+        System.out.println();
+        System.out.println("-------------- Display Board --------------");
+
+        System.out.println("Floor : "+floor.getFloorNumber());
+
+        System.out.println("Available Bike Spots : "+floor.getAvailableCount(SpotType.BIKE));
+
+        System.out.println("Available Car Spots : "+floor.getAvailableCount(SpotType.CAR));
+
+        System.out.println("Available Truck Spots : "+floor.getAvailableCount(SpotType.TRUCK));
+
+        System.out.println("-------------------------------------------");
+        System.out.println();
+    }
+}
+
+// We can create new observers for the same subject
+/*
+    class ParkingWebsite implements ParkingObserver
+    {
+        public void update()
+        {
+            
+        }
+    }
+*/
 class ParkEngine
 {
     public static void main(String A[]) 
