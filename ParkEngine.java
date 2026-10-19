@@ -499,7 +499,6 @@ class ParkingDisplayBoard implements ParkingObserver
     }
 }
 
-
 ///////////////////////////////////////////////////////////////
 ///  Step 8 : Create ParkingStrategy class
 ///  It is used to create a class Parkingstrategy which is 
@@ -532,6 +531,74 @@ class FirstAvailableParkingStrategy implements ParkingStrategy
         }
 
         return null;
+    }
+}
+
+///////////////////////////////////////////////////////////////
+///  Step 9 : Create PricingStrategy class
+
+///  It is used to create a class PricingStrategy 
+///  It keeps the pricing algorithm independent of exit logic
+
+///  Concepts : Strategy Design Pattern
+///////////////////////////////////////////////////////////////
+
+interface PricingStrategy 
+{
+    double calculatePrice(Vehicle vehicle, long hours);
+}
+
+class NormalPricingStrategy implements PricingStrategy
+{
+    @Override 
+    public double calculatePrice(Vehicle vehicle, long hours)
+    {
+        if(hours <= 0)
+        {
+            hours = 1;
+        }
+
+        switch(vehicle.getVehicleType())
+        {
+            case BIKE:
+                return hours * 20;
+
+            case CAR:
+                return hours * 50;
+
+            case TRUCK:
+                return hours * 100;
+
+            default:
+                return 0;
+        }
+    }
+}
+
+class WeekendPricingStrategy implements PricingStrategy
+{
+    @Override 
+    public double calculatePrice(Vehicle vehicle, long hours)
+    {
+        if(hours <= 0)
+        {
+            hours = 1;
+        }
+
+        switch(vehicle.getVehicleType())
+        {
+            case BIKE:
+                return hours * 40;
+
+            case CAR:
+                return hours * 100;
+
+            case TRUCK:
+                return hours * 200;
+
+            default:
+                return 0;
+        }
     }
 }
 
