@@ -499,6 +499,42 @@ class ParkingDisplayBoard implements ParkingObserver
     }
 }
 
+
+///////////////////////////////////////////////////////////////
+///  Step 8 : Create ParkingStrategy class
+///  It is used to create a class Parkingstrategy which is 
+//   responsible to decide the parking spot selection
+///  Concepts : Strategy Design Pattern
+///////////////////////////////////////////////////////////////
+
+// Defines a common concepts for parking spot selection algorithm
+interface ParkingStrategy
+{
+    ParkingSpot findSpot(List<ParkingFloor> floors, Vehicle vehicle);
+    
+}
+
+// Selects the first available parking spot
+class FirstAvailableParkingStrategy implements ParkingStrategy
+{
+    @Override 
+    public ParkingSpot findSpot(List<ParkingFloor> floors, Vehicle vehicle)
+    {
+        // Iterate over all available floors
+        for(ParkingFloor floor : floors)
+        {
+            ParkingSpot spot = floor.findAvailableSpot(vehicle);
+
+            if(spot != null)
+            {
+                return spot;
+            }
+        }
+
+        return null;
+    }
+}
+
 class ParkEngine
 {
     public static void main(String A[]) 
