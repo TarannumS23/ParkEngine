@@ -645,6 +645,198 @@ class CashPayment implements PaymentStrategy
     }
 }
 
+///////////////////////////////////////////////////////////////
+///  Step 11 : Create ParkingTicket class
+
+///  It is used to represent one complete parking transaction 
+
+///////////////////////////////////////////////////////////////
+
+class ParkingTicket
+{
+    // Used for generating unique tickets
+    private static int counter = 1000;
+
+    // Ticket number for unique ticket
+    private int ticketNumber;
+
+    // Vehicle associated with that ticket
+    private Vehicle vehicle;
+
+    // Floor on which the vehicle is parked
+    private ParkingFloor floor;
+
+    // Actual spot on which the vehicle is parked
+    private ParkingSpot spot;
+
+    // Time at which vehicle arrives
+    private LocalDateTime entryTime;
+
+    // Time at which vehicle exited from parking floor
+    private LocalDateTime exitTime;
+
+    // It maintains the status of the ticket
+    private TicketStatus status;
+
+    // parametrized constructor
+    public ParkingTicket(
+                            Vehicle vehicle,
+                            ParkingFloor floor,
+                            ParkingSpot spot
+                        )
+    {
+        this.ticketNumber = ++counter;
+        this.vehicle = vehicle;
+        this.floor = floor;
+        this.spot = spot;
+        this.entryTime = LocalDateTime.now();
+        this.status = TicketStatus.ACTIVE;
+    }
+
+    // Getter method for ticket number
+    public int getTicketNumber()
+    {
+        return this.ticketNumber;
+    }
+
+    // Getter method for vehicle
+    public Vehicle getVehicle()
+    {
+        return this.vehicle;
+    }
+
+    // Getter method for floor
+    public ParkingFloor getFloor()
+    {
+        return this.floor;
+    }
+
+    // Getter method for spot
+    public ParkingSpot getSpot()
+    {
+        return this.spot;
+    }
+
+    // Getter method for entry time
+    public LocalDateTime getEntryTime()
+    {
+        return this.entryTime;
+    }
+
+    // Getter method for exit time
+    public LocalDateTime getExitTime()
+    {
+        return this.exitTime;
+    }
+
+    // Getter method for status
+    public TicketStatus getStatus()
+    {
+        return this.status;
+    }
+
+    // Method gets called when vehicle is going out
+    public void closeTicket()
+    {
+        this.exitTime = LocalDateTime.now();
+
+        this.status = TicketStatus.CLOSED;
+    }
+
+    // Calculate the total number of hours the vehicle is parked
+    public long calculateHours()
+    {
+        LocalDateTime endtime;
+
+        if(exitTime == null)
+        {
+            endtime = LocalDateTime.now();
+        }
+        else
+        {
+            endtime = exitTime;
+        }
+
+        // Calculate the actual time 
+        long minutes = Duration.between(entryTime, endtime).toMinutes();
+
+        // Converts minutes to hours 
+        long hours = minutes / 60;
+
+        if(minutes % 60 != 0)
+        {
+            hours++;
+        }
+
+        if(hours == 0)
+        {
+            hours = 1;
+        }
+
+        return hours;
+    }
+
+    // It will display complete ticket on screen
+    public void displayTicket()
+    {
+        System.out.println();
+        
+        System.out.println("-------------------------------------------");
+        System.out.println("-------------- Parking Ticket -------------");
+        System.out.println("-------------------------------------------");
+
+        System.out.println("Ticket Number : "+this.ticketNumber);
+
+        System.out.println("Vehicle Number : "+this.vehicle.getVehicleNumber());
+
+        System.out.println("Vehicle Type : "+this.vehicle.getVehicleType());
+
+        System.out.println("Floor Number : "+this.floor.getFloorNumber());
+
+        System.out.println("Spot Number : "+this.spot.getSpotNumber());
+
+        System.out.println("Entry Time : "+this.entryTime);
+
+        System.out.println("Ticket Status : "+this.status);
+
+        System.out.println("-------------------------------------------");
+
+        System.out.println();
+    }
+}
+
+///////////////////////////////////////////////////////////////
+///  Step 12 : Create EntryGate class
+
+///  It is used to handle entry of a vehicle and its ticket 
+///  generation 
+
+///////////////////////////////////////////////////////////////
+
+class EntryGate
+{
+    private int gateNumber;
+
+    public EntryGate(int gateNumber)
+    {
+        this.gateNumber = gateNumber;
+    }
+
+    public int getGateNumber()
+    {
+        return this.gateNumber;
+    }
+
+    // It generates the new parking ticket when vehicle enters
+    public ParkingTicket generateTicket(Vehicle vehicle, ParkingFloor floor, ParkingSpot spot)
+    {
+        System.out.println("Vehicle Entering from gate : "+this.gateNumber);
+
+        // New Parking ticket gets generated for the vehicle
+        return new ParkingTicket(vehicle, floor, spot);
+    }
+}
+
 class ParkEngine
 {
     public static void main(String A[]) 
