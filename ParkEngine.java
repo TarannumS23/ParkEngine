@@ -953,6 +953,18 @@ class ParkingLot
 
     }
 
+    // Method to return the singleton class object
+
+    public static synchronized ParkingLot getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new ParkingLot();
+        }
+
+        return instance;
+    }
+
     // used to set name for complete parking lot
 
     public void setParkingLotName(String parkingLotName)
@@ -988,6 +1000,7 @@ class ParkingLot
     {
         this.pricingStrategy = strategy;
     }
+
 
 
     public ParkingTicket parkVehicle(
@@ -1105,6 +1118,7 @@ class ParkingLot
         }
     }
 } // End of parkingLot class
+
 
 class ParkEngine
 {
