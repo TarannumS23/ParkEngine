@@ -1133,7 +1133,7 @@ class ParkEngine
 
         ////////////////////////////////////////////////////
         /// 
-        ///  Create single Parking Lot object
+        ///  1 : Create single Parking Lot object
         /// 
         ////////////////////////////////////////////////////
         
@@ -1141,5 +1141,92 @@ class ParkEngine
 
         parkingLot.setParkingLotName("Marvellous ParkEngine");             // building name
 
+        ////////////////////////////////////////////////////
+        /// 
+        ///  2 : Create multiple floors
+        /// 
+        ////////////////////////////////////////////////////
+        
+        // Add first floor
+
+        ParkingFloor floor1 = new ParkingFloor(1);
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  3 : Create multiple spots
+        /// 
+        ////////////////////////////////////////////////////
+        
+        floor1.addParkingSpot(new BikeSpot(101));
+        floor1.addParkingSpot(new BikeSpot(102));
+
+        floor1.addParkingSpot(new CarSpot(103));
+        floor1.addParkingSpot(new CarSpot(104));
+
+        floor1.addParkingSpot(new TruckSpot(105));
+        floor1.addParkingSpot(new TruckSpot(106));
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  4 : Create display board
+        /// 
+        ////////////////////////////////////////////////////
+        
+        ParkingDisplayBoard board1 = new ParkingDisplayBoard(floor1);
+
+        // Register the display board with observern
+        floor1.addObserver(board1);
+
+        // Add second floor
+
+        ParkingFloor floor2 = new ParkingFloor(2);
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  3 : Create multiple spots
+        /// 
+        ////////////////////////////////////////////////////
+        
+        floor2.addParkingSpot(new BikeSpot(201));
+        floor2.addParkingSpot(new BikeSpot(202));
+
+        floor2.addParkingSpot(new CarSpot(203));
+        floor2.addParkingSpot(new CarSpot(204));
+
+        floor2.addParkingSpot(new TruckSpot(205));
+        floor2.addParkingSpot(new TruckSpot(206));
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  4 : Create display board
+        /// 
+        ////////////////////////////////////////////////////
+        
+        ParkingDisplayBoard board2 = new ParkingDisplayBoard(floor2);
+
+        // 5 : Register the display board with observern
+        floor2.addObserver(board2);
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  6 : Add floors to ParkingLot
+        /// 
+        ////////////////////////////////////////////////////
+        
+        parkingLot.addFloor(floor1);
+        parkingLot.addFloor(floor2);
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  7 : Create Entry Gate and Exit Gate
+        /// 
+        ////////////////////////////////////////////////////
+        
+        EntryGate entryGate = new EntryGate(1);
+
+        ExitGate exitGate = new ExitGate(1);
+
+        
     }
+
 } // End of main class
