@@ -1119,11 +1119,27 @@ class ParkingLot
     }
 } // End of parkingLot class
 
+///////////////////////////////////////////////////////////////
+
+///  Step 15 : Controller of the project
+
+///////////////////////////////////////////////////////////////
 
 class ParkEngine
 {
-    public static void main(String A[]) 
+    public static void main(String A[]) throws Exception
     {
+        Scanner sobj = new Scanner(System.in);
+
+        ////////////////////////////////////////////////////
+        /// 
+        ///  Create single Parking Lot object
+        /// 
+        ////////////////////////////////////////////////////
         
+        ParkingLot parkingLot = ParkingLot.getInstance();
+
+        parkingLot.setParkingLotName("Marvellous ParkEngine");             // building name
+
     }
-}
+} // End of main class
